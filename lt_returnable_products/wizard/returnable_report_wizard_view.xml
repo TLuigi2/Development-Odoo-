@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="report_wizard_view_form" model="ir.ui.view">
+            <field name="name">report_wizard_view_form.form</field>
+            <field name="model">wizard.returnable.report</field>
+            <field name="arch" type="xml">
+                <form string="Select period">
+                    El reporte de retornables considera los movimientos de entrada y salida por cada producto relacionado al proveedor,mostrando el total de productos retornables relacionado.
+                    <footer>
+                        <button name="print_valuation_report_xls" type="object" string="Generar Excel" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_report_open_wizard" model="ir.actions.act_window">
+            <field name="name">Reporte de retornables</field>
+            <field name="res_model">wizard.returnable.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_wizard_view_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="lt_returnable_products.report_reurnables" name="Inventario de retornables" sequence="99" parent="stock.menu_stock_root" groups="stock.group_stock_manager" action="lt_returnable_products.project_report_open_wizard"/>
+
+    </data>
+</odoo>

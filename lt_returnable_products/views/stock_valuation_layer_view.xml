@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="stock_valuation_layer_tree_lt_returned" model="ir.ui.view">
+    <field name="name">stock.valuation.layer.tree</field>
+    <field name="model">stock.valuation.layer</field>
+    <field name="inherit_id" ref="stock_account.stock_valuation_layer_tree"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='create_date']" position="before">
+          <field name="partner_id" />
+        </xpath>
+        <xpath expr="//field[@name='product_id']" position="after">
+          <field name="retornable" />
+        </xpath>
+    </field>
+</record>
+
+<record id="stock_valuation_layer_form_lt_returned" model="ir.ui.view">
+    <field name="name">stock.valuation.layer.form</field>
+    <field name="model">stock.valuation.layer</field>
+    <field name="inherit_id" ref="stock_account.stock_valuation_layer_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='create_date']" position="before">
+          <field name="partner_id" />
+        </xpath>
+        <xpath expr="//field[@name='product_id']" position="after">
+          <field name="retornable" />
+        </xpath>
+    </field>
+</record>
+
+<record id="stock_valuation_layer_search_partner_lt" model="ir.ui.view">
+        <field name="name">stock_valuation_layer_search_partner</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.view_inventory_valuation_search"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//search" position="inside">
+                    <group expand="0" string="Group by...">
+                        <filter string="Proveedor" name="group_by_partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+            </xpath>
+        
+        </field>
+    </record>
+
+    <record id="stock_valuation_layer_tree_lt_lt" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.tree</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="arch" type="xml">
+            <tree default_order="create_date desc, id desc" create="0"
+                  import="0" js_class="inventory_report_list">
+                <field name="create_date" string="Date" />
+                <field name="product_id" />
+                <field name="quantity" />
+                <field name="uom_id" groups="uom.group_uom" />
+                <field name="currency_id" invisible="1" />
+                <field name="value" sum="Total Value"/>
+                <field name="company_id" groups="base.group_multi_company" />
+                <groupby name="product_id">
+                    <field name="cost_method" invisible="1"/>
+                    <field name="quantity_svl" invisible="1"/>
+                    <button name="action_revaluation" icon="fa-plus" title="Add Manual Valuation" type="object" attrs="{'invisible':['|', ('cost_method', '=', 'standard'), ('quantity_svl', '&lt;=', 0)]}" />
+                </groupby>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="stock_valuation_layer_action_lt_lt" model="ir.actions.act_window">
+        <field name="name">Valoracion de inventario retornables</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.valuation.layer</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="view_id" ref="stock_valuation_layer_tree_lt_lt"/>
+        <field name="domain">[('product_id.returnable', '=', True)]</field>
+        <field name="context">{'search_default_group_by_partner_id': 1,'search_default_group_by_product_id': 2}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face"/>
+            <p>
+                There is no valuation layers. Valuation layers are created when some product moves should impact the valuation of the stock.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_valuation_returnable" name="Valoracion de inventario retornables" parent="stock.menu_warehouse_report" sequence="111" action="stock_valuation_layer_action_lt_lt"/>
+
+</odoo>

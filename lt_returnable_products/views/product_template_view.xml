@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_form_lt_returnable" model="ir.ui.view">
+        <field name="name">product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                 <div>
+                    <field name="returnable"/>
+                    <label for="returnable"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_form_lt_returnable_sale" model="ir.ui.view">
+        <field name="name">product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="sale.product_template_form_view_invoice_policy"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_tooltip']" position="after">
+                 <field name="returnable_related_id" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

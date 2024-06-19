@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record id="paperformat_ticket" model="report.paperformat">
+            <field name="name">Ticket Retornables Formato</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">400</field>
+            <field name="page_width">80</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">1</field>
+            <field name="dpi">110</field>
+        </record>
+
+        <template id="stock_picking_report_returnable">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.user_id.lang or o.partner_id.lang"/>
+                    <t t-call="lt_returnable_products.report_returnable_products" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_returnable_products">
+            <t t-call="web.basic_layout">
+                <t t-set="o" t-value="o.with_context({'lang': lang})"/>
+                <div class="page">
+                    <style>
+                        .imgti{
+                            width:100%;
+                            margin-left:15%;
+                            
+                        }s
+                        .qrti{
+                            width:70%
+                            justify-content:center;
+                        }
+                        .title_fac{
+                            justify-content:center;
+                            text-align:center;
+                        }
+                    </style>
+                    <div class="row" >
+                        <t t-if="o.company_id.logo" style="text-align:center;">
+                            <img style="max-height: 120px;" t-attf-src="data:image/*;base64,{{o.company_id.logo}}"/><br/><br/>
+                        </t>
+                    </div>
+
+                    <div style="text-align:center;" >
+                        <h2>
+                            <span><t t-esc="o.company_id.name"/></span> <br/>
+                            <span>VALE DE TARIMAS</span> <br/>
+                        </h2>
+                    </div>
+
+                    <div style="text-align:right;">
+                        <strong>Fecha:</strong><br/>
+                        <span t-field="o.scheduled_date"/>
+                    </div>
+                    
+                    <div >
+                        <strong>Nota de Entrada Nº:</strong>
+                        <br/>
+                        <span t-field="o.name"/>
+                    </div>
+
+                    <div >
+                        <strong>Recibimos de:</strong><br/>
+                        <span t-field="o.partner_id.name"/>
+                    </div>
+
+                    <div >
+                        <br/>
+                        <span t-field="o.note"/>
+                    </div>
+                    <div class="col-12 mt16">
+                        <div class="row">
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <t t-set="colspan" t-value="2"/>
+                                        <th class="text-left">Cantidad</th>
+                                        <th class="text-right">Concepto</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+
+                                    <t t-set="current_subtotal" t-value="0"/>
+
+                                    <t t-foreach="o.move_ids_without_package" t-as="line">
+                                        <tr t-att-class="'bg-200 font-weight-bold'">
+                                            <t t-if="line.product_id.returnable">
+                                                <td><span t-field="line.product_uom_qty"/></td>
+                                                <td class="text-right">
+                                                    <span t-field="line.product_id.name"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                        <tr class="is-subtotal text-right"></tr>    
+                                    </t>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div style="margin-top: 20px; text-align: center;">
+                      <div style="border-top: 1px solid black; width: 100%; text-align:center:"></div>
+                      <div style="margin-top: 5px;">Recibió</div>
+                    </div>
+
+                    
+                </div>
+
+            </t>
+        </template>
+
+        <record id="returnable_products_pdf_report" model="ir.actions.report">
+            <field name="name">Ticket productos retornables</field>
+            <field name="report_name">lt_returnable_products.stock_picking_report_returnable</field>
+            <field name="report_file" ref="lt_returnable_products.stock_picking_report_returnable"/>
+            <field name="print_report_name">'Ticket productos retornables.pdf'</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="paperformat_id" ref="paperformat_ticket"/>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        </record>
+
+    </data>
+</odoo>
