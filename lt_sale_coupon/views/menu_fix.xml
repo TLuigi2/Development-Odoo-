@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    
+    <!-- Especial menu central -->
+    <menuitem 
+        id="principal_coupon_menu" 
+        name="Promociones Ventas" 
+        web_icon="lt_sale_coupon,static/description/iconmenu.png" 
+        sequence="10"
+        groups="sales_team.group_sale_manager"
+        /> 
+
+    <!--<menuitem
+        id="menu_coupon_type_config_central"
+        action="coupon.coupon_program_action_coupon_program"
+        parent="principal_coupon_menu"
+        name="Programas cupones"
+        groups="sales_team.group_sale_manager"
+        sequence="1"
+    />-->
+
+        <menuitem
+        id="menu_promotion_type_config_central"
+        action="coupon.coupon_program_action_promo_program"
+        parent="principal_coupon_menu"
+        name="Programas Promociones"
+        groups="sales_team.group_sale_manager"
+        sequence="1"
+    />
+    <menuitem 
+        name="Puntos lealtad" 
+        id="menu_loyalty_points" 
+        parent="principal_coupon_menu" 
+        groups="sales_team.group_sale_manager"
+        sequence="2" 
+        action="act_negbla_loyaly_points"/>
+
+
+</odoo>

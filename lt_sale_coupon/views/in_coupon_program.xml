@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="negbla_in_coupon_program_form" model="ir.ui.view">
+        <field name="name">negbla_in_coupon_program.form</field>
+        <field name="model">coupon.program</field>
+        <field name="inherit_id" ref="coupon.coupon_program_view_promo_program_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='reward']" position="after">
+                <group>
+                    <field name="multi_free_prductos"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//sheet" position="before">
+            <header>
+                <field name="state_coupon_progrm" widget="statusbar" options="{'clickable':'1' }"/>
+            </header>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="sales_in_progromas" type="object" class="oe_stat_button"  icon="fa-tag">
+                    <field name="programs_count" widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page name="prodructs_free" string="Productos Gratis" attrs="{'invisible': [('multi_free_prductos', '!=',True)]}">
+                        <span>No se tomara en cuenta el Producto gratis unitario del campo de arriba.</span>
+                        <field name="products_reward_line">
+                                <tree editable='bottom'>
+                                    <!-- campos encontrados en el model llamado -->
+                                    <field name="product_id"/>
+                                    <field name="count_product"/>
+                                </tree>
+                            </field>
+                    </page>
+                </notebook>
+            </xpath>
+
+            <xpath expr="//field[@name='discount_max_amount']" position="attributes">
+                <attribute name="attrs">{'readonly': [('reward_type', '=','discount')]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="negbla_in_coupon_program_tree" model="ir.ui.view">
+        <field name="name">negbla_in_coupon_.tree</field>
+        <field name="model">coupon.program</field>
+        <field name="inherit_id" ref="coupon.coupon_program_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="replace">
+                <field name="state_coupon_progrm" widget="badge" decoration-danger="state_coupon_progrm == 'inactive'" decoration-success="state_coupon_progrm == 'active'"/>
+                <field name="reward_type"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--?Form -->
+<record id="negbla_loyalte_points_table_form" model="ir.ui.view">
+    <field name="name">negbla_loyalte_points_table.form</field>
+    <field name="model">loyalty.points</field>
+    <field name="arch" type="xml">
+        <form string="Table de Puntos">
+            <header>
+                <field name="state" widget="statusbar" options="{'clickable':'1' }"/>
+            </header>
+            <sheet>
+                <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Puntos Diciembre..."/>
+                        </h1>
+                    </div>
+            <notebook>
+                <page name="table_points" string="Tabla de puntos">
+                    <field name="points_lines_ids">
+                        <tree editable='bottom'>
+                                <!-- campos encontrados en el model llamado -->
+                                <field name="product_id"/>
+                                <field name="points"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids"/><!--solo apartir del odoo 14 -->
+                    <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+</record>
+
+<!--?Tree -->
+<record id="negbla_loyalty_tree" model="ir.ui.view">
+    <field name="name">negbla_loyalty.tree</field>
+    <field name="model">loyalty.points</field>
+    <field name="arch" type="xml">
+        <tree string="Tablas Lealtad">
+            <field name="name"/>
+            <field name="state" widget="badge" decoration-danger="state == 'inactivo'" decoration-success="state == 'activo'"/>
+        </tree>
+    </field>
+</record>
+<!-- ?action window -->
+    <record model="ir.actions.act_window" id="act_negbla_loyaly_points"> 
+        <field name="name">Puntos Lealtad</field> 
+        <field name="res_model">loyalty.points</field> 
+        <field name="view_mode">tree,form</field> 
+        <field name="view_id"  ref="negbla_loyalty_tree"/>
+    </record>
+
+
+
+
+</odoo>

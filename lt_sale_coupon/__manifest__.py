@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+
+{
+    'name': "Fixdoo Sale Coupon",
+    'summary': "Generacion de promociones con diferentes reglas, aplicando descuentos, productos gratis, al generar un pedido las promociones se agregan de forma automatica, se pueden agregar multiples promociones.",
+    'description': """ Genera proceso de promociones desarrollado a medida.""",
+    'category': 'Sales/Sales',
+    'author': 'Negblasoft',
+    'website': 'https://fixdoo.mx',
+    'support': 'Fixdoo',
+    'version': '1.0',
+    'depends': ['coupon', 'sale', 'sale_management','base','contacts'],
+    'data': [
+        'data/mail_template_data.xml',
+        'security/fixodoo_sale_coupon_security.xml',
+        'security/ir.model.access.csv',
+        'wizard/fixodoo_sale_coupon_apply_code_views.xml',
+        'wizard/fixodoo_loyalty_point_wiz.xml',
+        'views/sale_order_views.xml',
+        'views/in_sale_order.xml',
+        'views/in_coupon_program.xml',
+        'views/in_res_partner.xml',
+        'views/coupon_views.xml',
+        'views/coupon_program_views.xml',
+        'views/loyalty_points.xml',
+        'views/menu_fix.xml',
+        #'views/res_config_settings_views.xml',
+    ],
+    'installable' : True,
+    'application' : False,
+    'license': 'GPL-3',
+}

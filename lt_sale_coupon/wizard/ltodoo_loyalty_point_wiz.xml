@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="Negbla_loyalty_edit_pints_wiz" model="ir.ui.view">
+            <field name="name">loyalty.edit.points.wizard</field>
+            <field name="model">wiz.loyalty.points</field>
+            <field name="arch" type="xml">
+                <form string="Restar puntos lealtad">
+
+                    <p class="oe_grey">
+                        Uso de puntos lealtad.
+                    </p>
+                    <group>
+                        <group string="Usar Puntos">
+                            <field name="partner_id" readonly="1"/>
+                            <field name="motivo_de_resta"/>
+                            <field name="points"/>
+                        </group>
+                    </group>
+                    
+
+                    <footer>
+                        <button string="Restar Puntos" type="object" name="user_point_partner" class="btn-primary"/> or<button name="cancel" string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    
+
+</odoo>

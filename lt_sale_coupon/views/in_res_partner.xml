@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="negbla_res_partner_in_form" model="ir.ui.view">
+        <field name="name">negbla_res_partner_in.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('alert', 'alert-warning', 'oe_edit_only')]" position="after">
+                <header>
+                    <button name="edit_points"  class="oe_highlight" type="object" string="Editar Puntos Lealtad"/>
+                </header> 
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="acomulated_ponits" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page name="info_history_points" string="Historial de puntos">
+                    <span>Historico de resta de puntos</span>
+                    <field name="history_points_ids">
+                            <tree editable='bottom'>
+                                <!-- campos encontrados en el model llamado -->
+                                <field name="motivo_de_resta"/>
+                                <field name="points"/>
+                                
+                            </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

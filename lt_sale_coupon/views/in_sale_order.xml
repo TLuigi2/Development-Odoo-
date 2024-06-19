@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="negbla_sale_orde_in_form" model="ir.ui.view">
+        <field name="name">negbla_sale_orde_in.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sale_order_template_id']" position="after">
+                <field name="verifipromo"  widget="boolean_toggle"/>
+                <field name="points_use" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="no_code_promo_program_ids" widget="many2many_tags" string="Promociones aplicadas"/>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']" position="before"> 
+                <field name="is_reward_line" string="De Promo" invisible="1"/>
+                <field name="programas_ids" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='tax_totals_json']" position="after">
+                <field name="acomunlated_points" readonly="1"/>
+            </xpath>
+            <xpath expr="//header[1]" position="inside">
+                <!--  <button name="verification_points"  class="oe_highlight" type="object" string="Verificar puntos" attrs="{'invisible': [('state', 'not in', ['sale'] )]}"/> -->
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
