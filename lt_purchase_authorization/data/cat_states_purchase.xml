@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+        <record id="sp_01" model="states.purchase">
+            <field name="name">Presupuesto</field>
+            <field name="type_purchase">Indirecta</field>
+            <field name="check_indirecta">0</field>
+        </record>
+        <record id="sp_02" model="states.purchase">
+            <field name="name">Apro GTE</field>
+            <field name="type_purchase">Indirecta</field>
+            <field name="check_indirecta">0</field>
+        </record>
+        <record id="sp_03" model="states.purchase">
+            <field name="name">Apro FIN</field>
+            <field name="type_purchase">Indirecta</field>
+            <field name="check_indirecta">0</field>
+        </record>
+        <record id="sp_04" model="states.purchase">
+            <field name="name">Bloqueado</field>
+            <field name="type_purchase">Indirecta</field>
+            <field name="check_indirecta">0</field>
+        </record>
+    </data>
+</odoo>

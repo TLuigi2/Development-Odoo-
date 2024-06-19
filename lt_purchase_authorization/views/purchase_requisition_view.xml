@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_requisition_form_fx" model="ir.ui.view">
+        <field name="name">purchase.requisition.form.fx </field>
+        <field name="model">purchase.requisition</field>
+        <field name="priority" eval="8" />
+        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+        <field name="arch" type="xml">
+            <field name="vendor_id" position="after">
+                <field name="department" required="1"/>
+                <field name="type_purchase" required="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

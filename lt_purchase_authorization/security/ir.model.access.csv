@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_states_purchase_manager,states_purchase_manager,model_states_purchase,lt_purchase_authorization.lt_catalogs_group_manager,1,1,1,1
+access_states_purchase_user,states_purchase_user,model_states_purchase,purchase.group_purchase_user,1,0,0,0

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="lt_core" model="ir.module.category">
+            <field name="name">Objetives</field>
+            <field name="sequence">100</field>
+        </record>
+        
+        <!--Manager Catalogs-->
+        <record id="lt_catalogs_group_manager" model="res.groups">
+            <field name="name">Catalogos FIX Manager</field>
+            <field name="users" eval="[(4,ref('base.user_root')),(4, ref('base.user_admin'))]" />
+            <field name="category_id" eval="ref('lt_purchase_authorization.lt_core')" />
+        </record>
+
+
+        <record id="group_category_approvals" model="ir.module.category">
+            <field name="name">Aprobaciones</field>
+            <field name="description">Categoría para grupos de aprobación</field>
+            <field name="sequence">1</field>
+        </record>
+        
+
+        <record id="group_approve_gte" model="res.groups">
+            <field name="name">Aprobar GTE</field>
+            <field name="category_id" ref="lt_purchase_authorization.group_category_approvals"/>
+        </record>
+
+        <record id="group_approve_fin" model="res.groups">
+            <field name="name">Aprobar FIN</field>
+            <field name="category_id" ref="lt_purchase_authorization.group_category_approvals"/>
+        </record>
+
+        <record id="group_approve_dir" model="res.groups">
+            <field name="name">Aprobar DIR</field>
+            <field name="category_id" ref="lt_purchase_authorization.group_category_approvals"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_tree_inherit_fx" model="ir.ui.view">
+        <field name="name">purchase.order.inherit.tree.fx </field>
+        <field name="model">purchase.order</field>
+        <field name="priority" eval="8" />
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="replace">
+                <field name="type_purchase" invisible="1"/>
+                <field name="state" optional="hidden" widget="badge" decoration-success="state == 'purchase' or state == 'done'" decoration-warning="state == 'to approve'" decoration-info="state == 'draft' or state == 'sent'"/>
+                <field name="state_name" widget="badge" decoration-success="state_name == 'purchase' or state_name == 'done' or state_name == 'Presupuesto' or state_name == 'Apro GTE' or state_name == 'Bloqueado'" decoration-warning="state_name == 'to approve'" decoration-info="state_name == 'draft' or state_name == 'sent' or state_name == 'Apro FIN'"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="purchase_order_form_inherit_fx" model="ir.ui.view">
+        <field name="name">purchase.order.inherit.form.fx </field>
+        <field name="model">purchase.order</field>
+        <field name="priority" eval="8" />
+        <field name="inherit_id" ref="purchase_requisition.purchase_order_form_inherit"/>
+        <field name="arch" type="xml">
+            <field name="requisition_id" position="before">
+                <field name="department" required="0"/>
+                <field name="type_purchase" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="purchase_order_form_fx" model="ir.ui.view">
+        <field name="name">purchase.order.form.fx </field>
+        <field name="model">purchase.order</field>
+        <field name="priority" eval="8" />
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <button id="draft_confirm" position="replace">
+                <button name="button_confirm_approve" type="object" string="Confirmar pedido" id="draft_confirm" attrs="{'invisible':['|','|',('type_purchase','=','Indirecta'),('state','in',['cancel','sent','to approve','purchase','done']),('check_directa','=',False)]}"/>
+                <button name="button_confirm" type="object" string="Confirmar pedido" id="draft_confirm" attrs="{'invisible':['|','|',('type_purchase','=','Indirecta'),('state','in',['cancel','sent','to approve','purchase','done']),('check_directa','!=',False)]}"/>
+            </button>
+            <button id="bid_confirm" position="replace">
+                <button name="button_confirm" type="object" class="oe_highlight" string="Confirmar pedido" id="draft_confirm" attrs="{'invisible':['|',('type_purchase','=','Indirecta'),('state','in',['cancel','draft','to approve','purchase','done'])]}"/>
+            </button>
+            <button name="button_confirm" position="after">
+                <field name="state_pur_indirecta_name" invisible="1"/>
+
+                <button name="change_quote_aprogte" type="object" string="Aprobar" class="btn btn-info" attrs="{'invisible':['|','|',('type_purchase','=','Directa'),('state_pur_indirecta_name','!=','Presupuesto'),('state','=','cancel')]}"/>
+
+                <button name="change_aprodir_bloq" type="object" groups="lt_purchase_authorization.group_approve_gte" string="Aprobar" class="btn btn-info" attrs="{'invisible':['|','|','|',('type_purchase','=','Directa'),('state','=','cancel'),('check_indirecta','!=',False),('state_pur_indirecta_name','!=','Apro GTE')]}"/>
+
+
+                <button name="change_aprogte_aprofin" type="object" groups="lt_purchase_authorization.group_approve_fin"   string="Aprobar" class="btn btn-info" attrs="{'invisible':['|','|','|',('type_purchase','=','Directa'),('state','=','cancel'),('check_indirecta','=',False),('state_pur_indirecta_name','!=','Apro GTE')]}"/>
+
+                <button name="button_confirm" type="object" groups="lt_purchase_authorization.group_approve_dir" string="Aprobar" class="btn btn-info" attrs="{'invisible':['|','|','|',('type_purchase','=','Directa'),('state','=','cancel'),('check_indirecta','!=',False),('state_pur_indirecta_name','!=','Apro FIN')]}"/>                
+
+
+            </button>
+
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state_pur_indirecta_name','!=','Presupuesto')]}</attribute>
+            </xpath>
+
+            <field name="state" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft,sent,purchase" readonly="1" attrs="{'invisible':[('type_purchase','=','Indirecta')]}"/>
+            </field>
+            <field name="state" position="after">
+                <field name="check_indirecta" invisible="1"/>
+                <field name="check_directa" invisible="1"/>
+                <field name="state_pur_indirecta" widget="statusbar" domain="['|',('type_purchase','=',type_purchase),('check_indirecta','=',check_indirecta)]" attrs="{'invisible':[('type_purchase','=','Directa')]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="lt_purchase_view_search" model="ir.ui.view">
+        <field name="name">fx.purchase.view.search</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/filter[@name='draft']" position="after">
+		        <field name="state_pur_indirecta_name"/>
+		        <field name="type_purchase"/>
+                <field name="origin"/>
+                <filter name="apro_gte" string="Apro GTE" domain="[('state_pur_indirecta_name','=','Apro GTE')]"/>
+                <filter name="apro_fin" string="Apro FIN" domain="[('state_pur_indirecta_name','=','Apro FIN')]"/>
+                <filter name="apro_bloq" string="Bloqueado" domain="[('state_pur_indirecta_name','=','Bloqueado')]"/>
+		    </xpath>
+            <xpath expr="//search/group" position="inside">
+            <filter string="Tipo de compra" name="typePurchase_group" domain="[]" context="{'group_by':'type_purchase'}"/>
+            </xpath>
+
+		</field>
+	</record>
+</odoo>
+
