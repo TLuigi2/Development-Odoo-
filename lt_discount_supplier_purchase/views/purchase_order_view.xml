@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="purchase_order_form_fx" model="ir.ui.view">
+    <field name="name">purchase.order.form</field>
+    <field name="model">purchase.order</field>
+    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <field name="arch" type="xml">
+
+        <xpath expr="//field[@name='tax_totals_json']" position="after">
+            <field name="total_original" string="Total original" readonly="1"/>
+        </xpath>
+
+        <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="replace">
+            <field name="discount_1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            <field name="discount_2" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            <field name="discount_3" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            <field name="discount_4" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            <field name="price_total_new" invisible="1" />
+            <field name="price_unit" string="Precio unitario" readonly="1" force_save="1"/>
+            <field name="price_subtotal" string="Subtotal" readonly="1" force_save="1"/>
+        </xpath>
+
+
+        <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="replace">
+            <field name="price_unit_new" required="True" string="Nuevo Precio Unit" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+        </xpath>
+                
+        <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position="replace">
+            <field name="product_qty" required="True" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+        </xpath>
+
+        <xpath expr="//field[@name='order_line']/tree/field[@name='taxes_id']" position="replace">
+            <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use','=','purchase'), ('company_id', '=', parent.company_id), ('country_id', '=', parent.tax_country_id)]" context="{'default_type_tax_use': 'purchase', 'search_view_ref': 'account.account_tax_view_search'}" options="{'no_create': True}" optional="show" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+        </xpath>
+                                    
+
+    </field>
+</record>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="res_partner_form_fx" model="ir.ui.view">
+    <field name="name">res.partner.form</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='vat']" position="after">
+            <field name="id" string="No." widget="integer" options="{'widget': 'integer', 'no_grouping': True}"/>
+        </xpath>
+
+        <xpath expr="//notebook" position="inside">
+            <page name="trade_policies" string="Politica Comercial">
+                <group>
+                    <group string="Descuentos %">
+                        <field name="discount_1"/>
+                        <field name="discount_2"/>
+                        <field name="discount_3"/>
+                        
+                    </group>
+                    <group string="Descuento monto ($)">
+                        <field name="discount_4"/>
+                        
+                    </group>
+                  
+                </group>
+            </page>
+        </xpath>
+    </field>
+</record>
+</odoo>
